@@ -25,8 +25,7 @@ fit <- stan("stan/normal-regression.stan",
             data = stan_data_list, 
             iter = 2000, 
             chains = 4, 
-            seed = 8792, 
-            sample_file = "stanfit/normal-regression.csv")
+            seed = 8792)
 write_rds(fit, "stanfit/stanfit-normal-regression.rds")
 
 # evalute stan model
