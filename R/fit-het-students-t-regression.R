@@ -23,7 +23,8 @@ stan_data_list <- list(y = mf$y,
 # fit stan model and write to both rds and csv (stan version) files
 fit <- stan("stan/het-students-t-regression.stan", 
             data = stan_data_list, 
-            iter = 2000, 
+            iter = 1000,
+            thin = 4,
             chains = 4, 
             seed = 8792)
 write_rds(fit, "stanfit/stanfit-het-students-t-regression.rds")

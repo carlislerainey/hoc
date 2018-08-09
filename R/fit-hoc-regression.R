@@ -34,8 +34,8 @@ stan_data_list <- list(N, K, y, y_dir, X,
 
 # fit stan model and write to both rds and csv (stan version) files
 fit <- stan("stan/hoc-regression.stan", 
-            data = stan_data_list, 
-            iter = 2000, 
+            iter = 1000,
+            thin = 4,
             chains = 4, 
             seed = 8792)
 write_rds(fit, "stanfit/stanfit-hoc-regression.rds")

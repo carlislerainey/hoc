@@ -21,6 +21,7 @@ stanfit/stanfit-hoc-regression.rds loo/loo-hoc-regression.rds ppd/ppd-hoc-regres
 # compare fits
 loo/looic.png: R/compare-fits.R loo/loo-normal-regression.rds loo/loo-het-students-t-regression.rds loo/loo-hoc-regression.rds
 	Rscript $<		
+
 # cleaning phonies
 cleanALL:
 	rm -f data/sim-hoc-data.csv data/sim-hoc-data.rds
