@@ -2,8 +2,8 @@
 # load packages
 library(tidyverse)
 library(rstan)
-  rstan_options(auto_write = TRUE)
-  options(mc.cores = parallel::detectCores())
+rstan_options(auto_write = TRUE)
+options(mc.cores = parallel::detectCores())
 library(loo)  
 library(bayesplot)
 
