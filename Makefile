@@ -1,6 +1,11 @@
 
 # phonies
-all: loo/looic.png
+all: loo/looic.png dag
+
+# draw makefile dag
+dag: makefile-dag.png
+makefile-dag.png: Makefile
+	make -Bnd | make2graph | dot -Tpng -Gdpi=300 -o makefile-dag.png
 
 # simulate fake data
 data/sim-hoc-data.csv data/sim-hoc-data.rds: R/sim-hoc-data.R
