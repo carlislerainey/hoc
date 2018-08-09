@@ -4,6 +4,7 @@ library(tidyverse)
 library(rstan)
   rstan_options(auto_write = TRUE)
   options(mc.cores = parallel::detectCores())
+library(loo)  
 
   # load simulated data
 df <- read_rds("data/sim-hoc-data.rds") %>%
@@ -26,3 +27,10 @@ fit <- stan("stan/normal-regression.stan",
             seed = 8792, 
             sample_file = "stanfit/normal-regression.csv")
 write_rds(fit, "stanfit/stanfit-normal-regression.rds")
+
+# evalute stan model
+log_lik0 <- extract_log_lik(fit) # see ?extract_log_lik
+loo0 <- loo(log_lik0)
+write_rds(loo0, path = "loo/loo-normal-regression.rds")
+
+

@@ -7,11 +7,11 @@ data/sim-hoc-data.csv data/sim-hoc-data.rds: R/sim-hoc-data.R
 	Rscript $<
 	
 # fit linear regression 
-stanfit/stanfit-normal-regression.rds: R/normal-regression.R stan/normal-regression.stan data/sim-hoc-data.rds
+stanfit/stanfit-normal-regression.rds loo/loo-normal-regression.rds: R/fit-normal-regression.R stan/normal-regression.stan data/sim-hoc-data.rds
 	Rscript $<
 	
 # cleaning phonies
 cleanALL:
 	rm -f data/sim-hoc-data.csv data/sim-hoc-data.rds
-	rm -f stanfit/*
+	rm -f stanfit/* loo/*
 	rm -f stan/normal-regression.rds
