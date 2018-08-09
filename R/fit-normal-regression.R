@@ -5,6 +5,7 @@ library(rstan)
   rstan_options(auto_write = TRUE)
   options(mc.cores = parallel::detectCores())
 library(loo)  
+library(bayesplot)
 
   # load simulated data
 df <- read_rds("data/sim-hoc-data.rds") %>%
@@ -33,4 +34,10 @@ log_lik0 <- extract_log_lik(fit) # see ?extract_log_lik
 loo0 <- loo(log_lik0)
 write_rds(loo0, path = "loo/loo-normal-regression.rds")
 
-
+# plot y_rep
+y <- df$y
+y_rep <- extract(fit, "y_rep")$y_rep
+ppc_dens_overlay(y, y_rep[1:20, ]) +
+  labs(title = "Posterior Predictive Distribution (Simulated Data)",
+       subtitle = "Normal Regression")
+ggsave("ppd/ppd-normal-regression.png", height = 3, width = 4, scale = 1.3)
