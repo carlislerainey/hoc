@@ -1,37 +1,33 @@
 
 # phonies
-all: loo/looic.png dag
+all: sim/gen/looic.png dag
 
-# draw makefile dag
+# draw makefile dag, see https://gist.github.com/carlislerainey/9a1e49cb195076165a4f07a683ce05a7
 dag: makefile-dag.png
 makefile-dag.png: Makefile
 	make -Bnd | make2graph | dot -Tpng -Gdpi=300 -o makefile-dag.png
 
 # simulate fake data
-data/sim-hoc-data.csv data/sim-hoc-data.rds: R/sim-hoc-data.R
+sim/gen/data.rds: sim/sim-data.R
 	Rscript $<
 	
 # fit normal regression 
-stanfit/stanfit-normal-regression.rds loo/loo-normal-regression.rds ppd/ppd-normal-regression.png: R/fit-normal-regression.R stan/normal-regression.stan data/sim-hoc-data.rds
+sim/gen/stanfit-norm.rds sim/gen/loo-norm.rds ppd/gen/ppd-norm.png: sim/fit-norm.R stan/norm.stan sim/gen/data.rds
 	Rscript $<
 
 # fit heteroskedastic student's t regression 
-stanfit/stanfit-het-students-t-regression.rds loo/loo-het-students-t-regression.rds ppd/ppd-het-students-t-regression.png: R/fit-het-students-t-regression.R stan/het-students-t-regression.stan data/sim-hoc-data.rds
+sim/gen/stanfit-het-t.rds sim/gen/loo-het-t.rds sim/gen/ppd-het-t.png: sim/fit-het-t.R stan/het-t.stan sim/gen/data.rds
 	Rscript $<	
 	
 # fit hoc regression 
-stanfit/stanfit-hoc-regression.rds loo/loo-hoc-regression.rds ppd/ppd-hoc-regression.png: R/fit-hoc-regression.R stan/hoc-regression.stan data/sim-hoc-data.rds
+sim/gen/stanfit-hoc.rds sim/gen/loo-hoc.rds sim/gen/ppd-hoc.png: sim/fit-hoc.R stan/hoc.stan sim/gen/data.rds
 	Rscript $<	
 	
 # compare fits
-loo/looic.png: R/compare-fits.R loo/loo-normal-regression.rds loo/loo-het-students-t-regression.rds loo/loo-hoc-regression.rds
+sim/gen/looic.png: sim/compare-loo.R sim/gen/loo-norm.rds sim/gen/loo-het-t.rds sim/gen/loo-hoc.rds
 	Rscript $<		
 
 # cleaning phonies
 cleanALL:
-	rm -f data/sim-hoc-data.csv data/sim-hoc-data.rds
-	rm -f stanfit/* loo/* ppd/*
-	rm -f stan/normal-regression.rds
-	rm -f stan/het-students-t-regression.rds
-	rm -f stan/hoc-regression.rds
-	
+	rm -f sim/gen/*
+	rm -f stan/*.rds

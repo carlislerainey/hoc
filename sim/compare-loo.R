@@ -4,12 +4,12 @@ library(tidyverse)
 library(loo)
 
 # read loos
-normal <- read_rds("loo/loo-normal-regression.rds")
-het <- read_rds("loo/loo-het-students-t-regression.rds")
-hoc <- readRDS("loo/loo-hoc-regression.rds")
+norm <- read_rds("sim/gen/loo-norm.rds")
+het_t <- read_rds("sim/gen/loo-het-t.rds")
+hoc <- readRDS("sim/gen/loo-hoc.rds")
 
 # compare loos
-loo_df <- compare(normal, het, hoc) %>%
+loo_df <- compare(norm, het_t, hoc) %>%
   as.data.frame() %>%
   rownames_to_column(var = "model") %>%
   mutate(model = fct_reorder(as_factor(model), looic)) %>%
@@ -22,4 +22,4 @@ ggplot(loo_df, aes(x = model, y = looic, ymin = lwr, ymax = upr)) +
   geom_point() + 
   geom_linerange() + 
   coord_flip()
-ggsave("loo/looic.png", height = 3, width = 4, scale = 1.1)
+ggsave("sim/gen/looic.png", height = 3, width = 4, scale = 1.1)

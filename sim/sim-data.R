@@ -48,7 +48,6 @@ df <- df %>%
 
 # write to file
 df %>%
-  write_csv("data/sim-hoc-data.csv") %>%
-  write_rds("data/sim-hoc-data.rds")
+  write_rds("sim/gen/data.rds")
 
 

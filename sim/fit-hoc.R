@@ -8,7 +8,7 @@ library(loo)
 library(bayesplot)
 
 # load simulated data
-df <- read_rds("data/sim-hoc-data.rds") %>%
+df <- read_rds("sim/gen/data.rds") %>%
   glimpse()
 
 # format data for stan
@@ -33,12 +33,12 @@ stan_data_list <- list(N, K, y, y_dir, X,
                        y_neg_indicies, N_neg)
 
 # fit stan model and write to both rds and csv (stan version) files
-fit <- stan("stan/hoc-regression.stan", 
+fit <- stan("stan/hoc.stan", 
             iter = 1000,
             thin = 4,
             chains = 4, 
             seed = 8792)
-write_rds(fit, "stanfit/stanfit-hoc-regression.rds")
+write_rds(fit, "sim/gen/stanfit-hoc.rds")
 
 
 # check estimates (compare to true values)
@@ -52,7 +52,7 @@ summary(fit, pars = "alpha_neg_mag")
 # evalute stan model
 log_lik0 <- extract_log_lik(fit) # see ?extract_log_lik
 loo0 <- loo(log_lik0)
-write_rds(loo0, path = "loo/loo-hoc-regression.rds")
+write_rds(loo0, path = "sim/gen/loo-hoc.rds")
 
 # plot y_rep
 y <- df$y
@@ -60,4 +60,4 @@ y_rep <- extract(fit, "y_rep")$y_rep
 ppc_dens_overlay(y, y_rep[1:20, ]) +
   labs(title = "Posterior Predictive Distribution (Simulated Data)",
        subtitle = "HOC Regression")
-ggsave("ppd/ppd-hoc-regression.png", height = 3, width = 4, scale = 1.3)
+ggsave("sim/gen/ppd-hoc.png", height = 3, width = 4, scale = 1.3)
